@@ -1,0 +1,19 @@
+Below are rec readings from lectures.
+
+(1)
+
+Elementary Linear Algebra, Howard Anton
+• Fundamentals of Computer Graphics, 3rd edition, Shirley,
+Marschner
+• Computer Graphics Principles and Practice, 3rd edition,
+Hughes, van Dam, etc.
+• 3D Computer Graphics, 3rd edition, Alan Watt
+• Interactive Computer Graphics: A top-down approach
+with shader-based OpenGL, 6th edition, Angel
+• OpenGL Programming Guide, 8th edition, Shreiner et al.
+• Physically Based Rendering, 4th edition, Pharr et al.
+
+
+()
+
+
