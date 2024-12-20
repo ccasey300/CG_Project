@@ -16,4 +16,3 @@ with shader-based OpenGL, 6th edition, Angel
 
 ()
 
-
