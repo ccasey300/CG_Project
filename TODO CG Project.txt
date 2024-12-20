@@ -1,0 +1,49 @@
+TODO: CG Project
+
+* Create git repo						[Y]
+* Compile resources						[Y]
+* Create basic template, no detail				[Y]
+
+Tomorrow: (Sat)
+* Implement City-scape (geometry)[+screenshot (1)]		[]
+* Implement texture mapping (buildings)[+screenshot (2)]	[]
+* Implement infinite plane					[]
+
+
+Monday:
+* User movement camera (mouse) & location (keyboard)		[]
+* Begin writing up report/compiling latex report		[]
+* Implement lighting & shadows (lab3)[+screenshot (3)]		[]
+
+
+Tuesday:
+* Finish lighting & shadows					[]
+* Add any novel objects, make scene look good[+screenshot (4)]	[]
+
+
+***			Wednesday XMas				***
+
+
+Thursday:
+* Report almost finished					[]
+* Implement animation (lab4)(plane?car?)			[]
+* Have basic requirements fulfilled[+screenshot (5)]		[]
+
+
+Friday:
+* Implement advanced feature[+screenshot (6)]			[]
+* All final objects included & textures				[]
+* Finish source code						[]
+
+
+Saturday/Sunday:
+* Finish report writing, progress section etc.			[]
+* Take video							[]
+* Submit							[]
+
+
+Deliverables:
+* Source code (Finished by Friday)
+* Report (4 pages, LaTex) -> Progress report >=5 screenshots + Git history
+* MP4 Video		
+* 
