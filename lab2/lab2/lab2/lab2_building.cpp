@@ -246,7 +246,7 @@ struct Building {
         // TODO: Load a texture 
         // --------------------
         // --------------------
-        textureID = LoadTextureTileBox("../lab2/cyber_building1.jpg");
+        textureID = LoadTextureTileBox("../lab2/cyber_building.jpg");
 
         // TODO: Get a handle to texture sampler 
         // -------------------------------------
@@ -599,13 +599,13 @@ int main(void) {
         Road roadH;
         glm::vec3 positionH(i * baseSpace, 0, gridSize / 2 * baseSpace);
         glm::vec3 scaleH(baseSpace * gridSize, 1.0f, 10.0f);
-        roadH.initialize(positionH, scaleH, "../lab2/orange1.jpg"); // Specify road texture
+        roadH.initialize(positionH, scaleH, "../lab2/orange.jpg"); // Specify road texture
     	roads.push_back(roadH);
 
         Road roadV;
         glm::vec3 positionV(gridSize / 2 * baseSpace, 0, i * baseSpace);
         glm::vec3 scaleV(10.0f, 1.0f, baseSpace * gridSize);
-        roadV.initialize(positionV, scaleV, "../lab2/orange1.jpg"); // Specify road texture
+        roadV.initialize(positionV, scaleV, "../lab2/orange.jpg"); // Specify road texture
     	roads.push_back(roadV);
     }
 
