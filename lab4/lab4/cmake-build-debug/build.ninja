@@ -52,14 +52,14 @@ build cmake_object_order_depends_target_lab4: phony || cmake_object_order_depend
 build CMakeFiles/lab4.dir/lab4/project.cpp.obj: CXX_COMPILER__lab4_unscanned_Debug C$:/Users/Chris/Desktop/CG$ Project/From$ Github/CG_Project/lab4/lab4/lab4/project.cpp || cmake_object_order_depends_target_lab4
   DEP_FILE = CMakeFiles\lab4.dir\lab4\project.cpp.obj.d
   FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glfw-3.1.2/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glm-0.9.7.1" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-opengl-3.3/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/tinygltf-2.9.3" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/lab4" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-3.3/include"
+  INCLUDES = -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glfw-3.1.2/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glm-0.9.7.1" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-opengl-3.3/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/tinygltf-2.9.3" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/lab4" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/shader" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-3.3/include"
   OBJECT_DIR = CMakeFiles\lab4.dir
   OBJECT_FILE_DIR = CMakeFiles\lab4.dir\lab4
 
 build CMakeFiles/lab4.dir/lab4/render/shader.cpp.obj: CXX_COMPILER__lab4_unscanned_Debug C$:/Users/Chris/Desktop/CG$ Project/From$ Github/CG_Project/lab4/lab4/lab4/render/shader.cpp || cmake_object_order_depends_target_lab4
   DEP_FILE = CMakeFiles\lab4.dir\lab4\render\shader.cpp.obj.d
   FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glfw-3.1.2/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glm-0.9.7.1" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-opengl-3.3/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/tinygltf-2.9.3" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/lab4" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-3.3/include"
+  INCLUDES = -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glfw-3.1.2/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glm-0.9.7.1" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-opengl-3.3/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/tinygltf-2.9.3" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/lab4" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/shader" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-3.3/include"
   OBJECT_DIR = CMakeFiles\lab4.dir
   OBJECT_FILE_DIR = CMakeFiles\lab4.dir\lab4\render
 
@@ -80,6 +80,47 @@ build lab4.exe: CXX_EXECUTABLE_LINKER__lab4_Debug CMakeFiles/lab4.dir/lab4/proje
   TARGET_FILE = lab4.exe
   TARGET_IMPLIB = liblab4.dll.a
   TARGET_PDB = lab4.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target lab2_building
+
+
+#############################################
+# Order-only phony target for lab2_building
+
+build cmake_object_order_depends_target_lab2_building: phony || cmake_object_order_depends_target_glad cmake_object_order_depends_target_glfw
+
+build CMakeFiles/lab2_building.dir/lab4/lab2_building.cpp.obj: CXX_COMPILER__lab2_building_unscanned_Debug C$:/Users/Chris/Desktop/CG$ Project/From$ Github/CG_Project/lab4/lab4/lab4/lab2_building.cpp || cmake_object_order_depends_target_lab2_building
+  DEP_FILE = CMakeFiles\lab2_building.dir\lab4\lab2_building.cpp.obj.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glfw-3.1.2/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glm-0.9.7.1" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-opengl-3.3/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/tinygltf-2.9.3" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/lab4" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/shader" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-3.3/include"
+  OBJECT_DIR = CMakeFiles\lab2_building.dir
+  OBJECT_FILE_DIR = CMakeFiles\lab2_building.dir\lab4
+
+build CMakeFiles/lab2_building.dir/lab4/render/shader.cpp.obj: CXX_COMPILER__lab2_building_unscanned_Debug C$:/Users/Chris/Desktop/CG$ Project/From$ Github/CG_Project/lab4/lab4/lab4/render/shader.cpp || cmake_object_order_depends_target_lab2_building
+  DEP_FILE = CMakeFiles\lab2_building.dir\lab4\render\shader.cpp.obj.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glfw-3.1.2/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glm-0.9.7.1" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-opengl-3.3/include" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/tinygltf-2.9.3" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/lab4" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/shader" -I"C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/external/glad-3.3/include"
+  OBJECT_DIR = CMakeFiles\lab2_building.dir
+  OBJECT_FILE_DIR = CMakeFiles\lab2_building.dir\lab4\render
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target lab2_building
+
+
+#############################################
+# Link the executable lab2_building.exe
+
+build lab2_building.exe: CXX_EXECUTABLE_LINKER__lab2_building_Debug CMakeFiles/lab2_building.dir/lab4/lab2_building.cpp.obj CMakeFiles/lab2_building.dir/lab4/render/shader.cpp.obj | glfw3dll.a libglad.dll.a || glfw3.dll libglad.dll
+  FLAGS = -g
+  LINK_LIBRARIES = -lopengl32  -lglu32  glfw3dll.a  libglad.dll.a  -lopengl32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\lab2_building.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = lab2_building.exe
+  TARGET_IMPLIB = liblab2_building.dll.a
+  TARGET_PDB = lab2_building.exe.dbg
 
 
 #############################################
@@ -384,6 +425,8 @@ build glad: phony libglad.dll
 
 build glfw: phony glfw3.dll
 
+build lab2_building: phony lab2_building.exe
+
 build lab4: phony lab4.exe
 
 # =============================================================================
@@ -394,7 +437,7 @@ build lab4: phony lab4.exe
 #############################################
 # Folder: C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/cmake-build-debug
 
-build all: phony lab4.exe external/all
+build all: phony lab4.exe lab2_building.exe external/all
 
 # =============================================================================
 

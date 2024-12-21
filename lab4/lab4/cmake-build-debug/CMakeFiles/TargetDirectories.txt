@@ -1,4 +1,5 @@
 C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/cmake-build-debug/CMakeFiles/lab4.dir
+C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/cmake-build-debug/CMakeFiles/lab2_building.dir
 C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/cmake-build-debug/CMakeFiles/edit_cache.dir
 C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
 C:/Users/Chris/Desktop/CG Project/From Github/CG_Project/lab4/lab4/cmake-build-debug/external/CMakeFiles/edit_cache.dir

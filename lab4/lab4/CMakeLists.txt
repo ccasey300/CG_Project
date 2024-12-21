@@ -14,7 +14,9 @@ include_directories(
 	external/glm-0.9.7.1/
 	external/glad-opengl-3.3/include/
 	external/tinygltf-2.9.3/
+	external/
 	lab4/
+	shader/
 )
 
 add_executable(lab4
@@ -25,4 +27,17 @@ target_link_libraries(lab4
 	${OPENGL_LIBRARY}
 	glfw
 	glad
+)
+
+# Add lab2_building.cpp as a new executable
+add_executable(lab2_building
+		lab4/lab2_building.cpp
+		lab4/render/shader.cpp  # Include shader files that lab2_building might use
+)
+
+# Link libraries for the new lab2_building executable
+target_link_libraries(lab2_building
+		${OPENGL_LIBRARY}
+		glfw
+		glad
 )

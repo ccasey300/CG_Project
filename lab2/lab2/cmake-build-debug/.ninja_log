@@ -1,0 +1,26 @@
+# ninja log v6
+61	1139	7564829980450832	external/glad-3.3/CMakeFiles/glad.dir/src/gl.c.obj	741528765f7ea12c
+102	2564	7564829980853995	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/context.c.obj	f2fd804bc5f8ff97
+111	2621	7564829980945861	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/init.c.obj	51aa586a8c4ea5e9
+22	6285	7564904338362690	CMakeFiles/lab2_skybox.dir/lab2/lab2_skybox.cpp.obj	f72ca4fbef6c873f
+3498	5926	7564830014815745	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/win32_init.c.obj	7506774d99d69c8a
+1141	3498	7564829991245175	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/input.c.obj	1f6120946ead7872
+29	2268	7564904338433036	CMakeFiles/lab2_skybox.dir/lab2/render/shader.cpp.obj	743e1adbb7d4d388
+2564	4888	7564830005474101	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/monitor.c.obj	15e7f00271e9acf1
+2622	4870	7564830006050762	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/window.c.obj	48b8b1f98e6c8c35
+4870	6826	7564830028536691	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/win32_monitor.c.obj	52d3ab8d14c09be0
+4889	6854	7564830028718016	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/win32_time.c.obj	24965425812633b3
+5926	7744	7564830039097666	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/win32_tls.c.obj	45586f35652271ad
+6854	8766	7564830048374374	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/winmm_joystick.c.obj	c83db6d8fb881a39
+6830	9001	7564830048134363	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/win32_window.c.obj	3c5fed38ffcf54b8
+7744	9842	7564830057283479	external/glfw-3.1.2/src/CMakeFiles/glfw.dir/wgl_context.c.obj	ac3917541c1da45f
+9842	10328	7564830078248367	libglad.a	37303133f2290347
+9001	10799	7564830069851143	CMakeFiles/lab2_building.dir/lab2/render/shader.cpp.obj	fe3a1ea28d56e061
+10329	10967	7564830089250753	glfw3.dll	bbbe7cd501fa33e9
+10329	10967	7564830089250753	glfw3dll.a	bbbe7cd501fa33e9
+8766	13293	7564830067492804	CMakeFiles/lab2_building.dir/lab2/lab2_building.cpp.obj	bb118385e26f8bc2
+5	456	7564910779833447	build.ninja	e5169fa85036db3a
+13294	13607	7564830112768722	lab2_building.exe	a999ca124e3db952
+452	758	7518201183450896	libglad.dll	52bc595a721b2f84
+452	758	7518201183450896	libglad.dll.a	52bc595a721b2f84
+6285	7672	7564904400941783	lab2_skybox.exe	72dbd49e1dda8c71
