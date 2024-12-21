@@ -7,10 +7,11 @@ TODO: CG Project
 Tomorrow: (Sat)
 * Implement City-scape (geometry)[+screenshot (1)]		[Y]
 * Implement texture mapping (buildings)[+screenshot (2)]	[Y]
-* Implement infinite plane					[]
+
 
 
 Monday:
+* Implement infinite plane					[]
 * User movement camera (mouse) & location (keyboard)		[]
 * Begin writing up report/compiling latex report		[]
 * Implement lighting & shadows (lab3)[+screenshot (3)]		[]

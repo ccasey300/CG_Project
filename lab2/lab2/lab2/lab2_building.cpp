@@ -199,11 +199,10 @@ struct Building {
 	GLuint textureSamplerID;
 	GLuint programID;
 
-	void initialize(glm::vec3 position, glm::vec3 scale, GLuint textureID) {
+	void initialize(glm::vec3 position, glm::vec3 scale) {
 		// Define scale of the building geometry
 		this->position = position;
 		this->scale = scale;
-		this->textureID = textureID;
 
 		// Create a vertex array object
 		glGenVertexArrays(1, &vertexArrayID);
@@ -247,7 +246,7 @@ struct Building {
         // TODO: Load a texture 
         // --------------------
         // --------------------
-        textureID = LoadTextureTileBox("../lab2/cyber_building.jpg");
+        textureID = LoadTextureTileBox("../lab2/cyber_building1.jpg");
 
         // TODO: Get a handle to texture sampler 
         // -------------------------------------
@@ -322,174 +321,348 @@ struct Building {
 	}
 }; 
 
-int main(void)
-{
-	// Initialise GLFW
-	if (!glfwInit())
-	{
-		std::cerr << "Failed to initialize GLFW." << std::endl;
-		return -1;
+//define the road strct
+
+struct Road {
+    glm::vec3 position;        // Position of the road
+    glm::vec3 scale;           // Size of the road in each axis
+    GLuint textureID;          // Texture ID for OpenGL
+
+    GLuint vertexArrayID;
+    GLuint vertexBufferID;
+    GLuint indexBufferID;
+    GLuint colorBufferID;
+    GLuint uvBufferID;
+    GLuint programID;
+    GLuint mvpMatrixID;
+    GLuint textureSamplerID;
+
+    GLfloat vertex_buffer_data[72] = {
+        // Front face
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+
+        // Back face
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+
+        // Left face
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, -1.0f,
+
+        // Right face
+        1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, 1.0f,
+
+        // Top face
+        -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+
+        // Bottom face
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+    };
+
+    GLfloat color_buffer_data[72] = {
+        // Front, red
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+
+        // Back, yellow
+        1.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+
+        // Left, green
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+
+        // Right, cyan
+        0.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f,
+
+        // Top, blue
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+
+        // Bottom, magenta
+        1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f,
+    };
+
+
+	//tezture appeared stretched and morphed
+	//fix: create a new, rectangular tezxture to match dimesions of roads.
+	GLfloat uv_buffer_data[48] = {
+		// Assume the longer dimension is aligned horizontally for these faces
+		// Front (narrow face, vertical road's cross-section)
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+
+		// Back (same as Front)
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+
+		// Left (long face, vertical road, texture should be scaled according to road length)
+		0.0f, 10.0f, // The texture repeats 10 times along the road's length
+		0.0f, 0.0f,
+		1.0f, 10.0f,
+		1.0f, 0.0f,
+
+		// Right (same as Left)
+		0.0f, 10.0f, // Adjust repetition according to actual road length
+		0.0f, 0.0f,
+		1.0f, 10.0f,
+		1.0f, 0.0f,
+
+		// Top (long face, horizontal road, texture matches dimensions)
+		0.0f, 1.0f,
+		10.0f, 1.0f, // Assuming the horizontal road is also long and the texture should repeat
+		10.0f, 0.0f,
+		0.0f, 0.0f,
+
+		// Bottom (typically unseen, simple mapping)
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f
+	};
+
+
+    GLuint index_buffer_data[36] = {
+        0, 1, 2,
+        0, 2, 3,
+        4, 5, 6,
+        4, 6, 7,
+        8, 9, 10,
+        8, 10, 11,
+        12, 13, 14,
+        12, 14, 15,
+        16, 17, 18,
+        16, 18, 19,
+        20, 21, 22,
+        20, 22, 23
+    };
+
+	void initialize(glm::vec3 position, glm::vec3 scale, const char* textureFilePath) {
+		this->position = position;
+		this->scale = scale;
+
+		// Load the specified texture
+		textureID = LoadTextureTileBox(textureFilePath);
+
+		glGenVertexArrays(1, &vertexArrayID);
+		glBindVertexArray(vertexArrayID);
+
+		glGenBuffers(1, &vertexBufferID);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_STATIC_DRAW);
+
+		glGenBuffers(1, &colorBufferID);
+		glBindBuffer(GL_ARRAY_BUFFER, colorBufferID);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(color_buffer_data), color_buffer_data, GL_STATIC_DRAW);
+
+		glGenBuffers(1, &uvBufferID);
+		glBindBuffer(GL_ARRAY_BUFFER, uvBufferID);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uv_buffer_data), uv_buffer_data, GL_STATIC_DRAW);
+
+		glGenBuffers(1, &indexBufferID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_buffer_data), index_buffer_data, GL_STATIC_DRAW);
+
+		programID = LoadShadersFromFile("../lab2/box.vert", "../lab2/box.frag");
+		mvpMatrixID = glGetUniformLocation(programID, "MVP");
+		textureSamplerID = glGetUniformLocation(programID, "textureSampler");
 	}
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // For MacOS
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Open a window and create its OpenGL context
-	window = glfwCreateWindow(1024, 768, "Lab 2", NULL, NULL);
-	if (window == NULL)
-	{
-		std::cerr << "Failed to open a GLFW window." << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
+    void render(glm::mat4 cameraMatrix) {
+        glUseProgram(programID);
 
-	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	glfwSetKeyCallback(window, key_callback);
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// Load OpenGL functions, gladLoadGL returns the loaded version, 0 on error.
-	int version = gladLoadGL(glfwGetProcAddress);
-	if (version == 0)
-	{
-		std::cerr << "Failed to initialize OpenGL context." << std::endl;
-		return -1;
-	}
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, colorBufferID);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// Background
-	glClearColor(0.2f, 0.2f, 0.25f, 0.0f);
+        glEnableVertexAttribArray(2);
+        glBindBuffer(GL_ARRAY_BUFFER, uvBufferID);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
 
-	// TODO: Create more buildings
-    // ---------------------------
+        glm::mat4 modelMatrix = glm::mat4(1.0f);
+        modelMatrix = glm::translate(modelMatrix, position);
+        modelMatrix = glm::scale(modelMatrix, scale);
 
-    //creating the city
-	//new attempt better, includes some randomness for realism
-	std::vector<Building> buildings;
-    int gridSize = 6;  // Number of buildings along x/y axes.
-    float baseSpace = 100.0f;  // Base space between buildings
+        glm::mat4 mvp = cameraMatrix * modelMatrix;
+        glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, &mvp[0][0]);
 
-    std::srand(static_cast<unsigned>(std::time(nullptr)));  // Seed for better randomness.
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glUniform1i(textureSamplerID, 0);
 
-    int roadIndexX = gridSize / 2;  // Calculate the middle index for the x-axis
-    int roadIndexY = gridSize / 2;  // Calculate the middle index for the y-axis
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-    // Create paths where roads should be
-    for (int i = 0; i < gridSize; i++) {
-        // Horizontal road
-        Building roadH;
-        glm::vec3 positionH(i * baseSpace, 0, roadIndexY * baseSpace);
-        glm::vec3 scaleH(baseSpace * gridSize, 1.0f, 10.0f);  // Make the road flat and as wide as the grid
-        roadH.initialize(positionH, scaleH);
-        buildings.push_back(roadH);
-
-        // Vertical road
-        Building roadV;
-        glm::vec3 positionV(roadIndexX * baseSpace, 0, i * baseSpace);
-        glm::vec3 scaleV(10.0f, 1.0f, baseSpace * gridSize);  // Make the road flat and as long as the grid
-        roadV.initialize(positionV, scaleV);
-        buildings.push_back(roadV);
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
     }
 
+    void cleanup() {
+        glDeleteBuffers(1, &vertexBufferID);
+        glDeleteBuffers(1, &colorBufferID);
+        glDeleteBuffers(1, &indexBufferID);
+        glDeleteVertexArrays(1, &vertexArrayID);
+        glDeleteTextures(1, &textureID);
+        glDeleteProgram(programID);
+    }
+};
+
+
+
+int main(void) {
+    // Initialise GLFW
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW." << std::endl;
+        return -1;
+    }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // For MacOS
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // Open a window and create its OpenGL context
+    GLFWwindow* window = glfwCreateWindow(2048, 1536, "Lab 2", NULL, NULL);
+    if (window == NULL) {
+        std::cerr << "Failed to open a GLFW window." << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+
+    // Ensure we can capture the escape key being pressed below
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSetKeyCallback(window, key_callback);
+
+    // Load OpenGL functions, gladLoadGL returns the loaded version, 0 on error.
+    int version = gladLoadGL(glfwGetProcAddress);
+    if (version == 0) {
+        std::cerr << "Failed to initialize OpenGL context." << std::endl;
+        return -1;
+    }
+
+    // Background
+    glClearColor(0.2f, 0.2f, 0.25f, 0.0f);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    std::vector<Building> buildings; // For storing  buildings
+	std::vector<Road> roads;  // Use separate vector for roads
+    int gridSize = 6; // Number of buildings along x/y axes.
+    float baseSpace = 100.0f; // Base space between buildings
+
+    std::srand(static_cast<unsigned>(std::time(nullptr))); // Seed for better randomness.
+
+    // Create roads
+    for (int i = 0; i < gridSize; i++) {
+        Road roadH;
+        glm::vec3 positionH(i * baseSpace, 0, gridSize / 2 * baseSpace);
+        glm::vec3 scaleH(baseSpace * gridSize, 1.0f, 10.0f);
+        roadH.initialize(positionH, scaleH, "../lab2/orange1.jpg"); // Specify road texture
+    	roads.push_back(roadH);
+
+        Road roadV;
+        glm::vec3 positionV(gridSize / 2 * baseSpace, 0, i * baseSpace);
+        glm::vec3 scaleV(10.0f, 1.0f, baseSpace * gridSize);
+        roadV.initialize(positionV, scaleV, "../lab2/orange1.jpg"); // Specify road texture
+    	roads.push_back(roadV);
+    }
+
+    // Create buildings
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
-            // Skip the middle row and column to create roads
-            if (i == roadIndexX || j == roadIndexY) {
-                continue;  // Skip this iteration, creating a gap
-            }
+            if (i == gridSize / 2 || j == gridSize / 2) continue; // Skip the road lines
 
             Building b;
-
-            // Introducing random variation in the placement space
-            float spaceVariationX = static_cast<float>(rand() % 20 - 10);  // Random variation between -10 and 10
+            float spaceVariationX = static_cast<float>(rand() % 20 - 10); // Random variation
             float spaceVariationY = static_cast<float>(rand() % 20 - 10);
-
-            // Update the base space dynamically
             float dynamicSpaceX = baseSpace + spaceVariationX;
             float dynamicSpaceY = baseSpace + spaceVariationY;
-
             glm::vec3 position(i * dynamicSpaceX, 0, j * dynamicSpaceY);
-
-            float width = 14.0f + static_cast<float>(rand() % 10);  // Width between 14 and 24
-            float height = 40.0f + static_cast<float>(rand() % 120);  // Height between 40 and 160
-            float depth = 14.0f + static_cast<float>(rand() % 10);  // Depth between 14 and 24
-
+            float width = 14.0f + static_cast<float>(rand() % 10);
+            float height = 40.0f + static_cast<float>(rand() % 120);
+            float depth = 14.0f + static_cast<float>(rand() % 10);
             glm::vec3 size(width, height, depth);
-
-            b.initialize(position, size);
+            b.initialize(position, size); // Specify building texture
             buildings.push_back(b);
         }
     }
-
-
-	//first attempt, grid like and poor
-	/*
-    int gridSize = 5; //no. of buildings along x/y axes.
-    float space = 100.0f;// space between buildings
-    for (int i = 0; i < gridSize; i++)  {
-        for (int j = 0; j < gridSize; j++)  {
-            Building b;
-            //introduce randomness for dimensions of buildings
-            unsigned int seed = static_cast<unsigned>(i * gridSize + j);
-            srand(seed);
-
-            glm::vec3 position(i * space, 0, j * space);
-
-            float width = 14.0f + static_cast<float>(rand() % 5); // width between 14 and 18
-            float height = 70.0f + static_cast<float>(rand() % 40); // Hheight between 70 and 110
-            float depth = 14.0f + static_cast<float>(rand() % 5); //  between 14 and 18
-
-            glm::vec3 size(width, height, depth);
-            //initialise and pass
-            b.initialize(position, size);
-            buildings.push_back(b);
-        }
-    }
-    */
-	// Camera setup
-    eye_center.y = viewDistance * cos(viewPolar);
-    eye_center.x = viewDistance * cos(viewAzimuth);
-    eye_center.z = viewDistance * sin(viewAzimuth);
+	eye_center.y = viewDistance * cos(viewPolar);
+	eye_center.x = viewDistance * cos(viewAzimuth);
+	eye_center.z = viewDistance * sin(viewAzimuth);
 
 	glm::mat4 viewMatrix, projectionMatrix;
-    glm::float32 FoV = 45;
-	glm::float32 zNear = 0.1f; 
+	glm::float32 FoV = 45;
+	glm::float32 zNear = 0.1f;
 	glm::float32 zFar = 1200.0f;//1000
 	projectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, zNear, zFar);
 
-	do
-	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		viewMatrix = glm::lookAt(eye_center, lookat, up);
-		glm::mat4 vp = projectionMatrix * viewMatrix;
-
-		// Render the buildings
-
-
+    // Rendering loop
+    do {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glm::mat4 viewMatrix = glm::lookAt(eye_center, lookat, up);
+        glm::mat4 vp = projectionMatrix * viewMatrix;
         for (auto &building : buildings) {
             building.render(vp);
-        }//loop through and render all buildings
+        }
+    	for (auto &road : roads) {
+    		road.render(vp);
+    	}
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    } while (!glfwWindowShouldClose(window));
 
-		// Swap buffers
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-
-	} // Check if the ESC key was pressed or the window was closed
-	while (!glfwWindowShouldClose(window));
-
-	// Clean up
-	//b.cleanup();
-
-	// Close OpenGL window and terminate GLFW
-	glfwTerminate();
-
-	return 0;
+    // Cleanup
+    for (auto &building : buildings) {
+        building.cleanup();
+    }
+    glfwTerminate();
+    return 0;
 }
+
+
 
 // Is called whenever a key is pressed/released via GLFW
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode)
