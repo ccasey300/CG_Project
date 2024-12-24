@@ -151,14 +151,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "lab2_building::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-lab2_building-Debug-78f074d296d98e91ff4f.json",
+					"jsonFile" : "target-lab2_building-Debug-1f06a705b29041af6eea.json",
 					"name" : "lab2_building",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "lab2_skybox::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-lab2_skybox-Debug-90b254b3afed8335f25e.json",
+					"jsonFile" : "target-lab2_skybox-Debug-8646844c3badfb9179a6.json",
 					"name" : "lab2_skybox",
 					"projectIndex" : 0
 				}
