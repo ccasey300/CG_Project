@@ -1,3 +1,5 @@
+
+//below previously worked:
 #version 330 core
 
 // Input
@@ -9,7 +11,7 @@ layout(location = 2) in vec2 vertexUV;
 out vec3 color;
 out vec2 uv;
 
-// TODO: To add UV to this vertex shader 
+// TODO: To add UV to this vertex shader
 
 // Matrix for vertex transformation
 uniform mat4 MVP;
@@ -17,7 +19,7 @@ uniform mat4 MVP;
 void main() {
     // Transform vertex
     gl_Position =  MVP * vec4(vertexPosition, 1);
-    
+
     // Pass vertex color to the fragment shader
     color = vertexColor;
 

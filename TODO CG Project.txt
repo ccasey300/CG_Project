@@ -1,46 +1,49 @@
 TODO: CG Project
 
-* Create git repo						[Y]
-* Compile resources						[Y]
-* Create basic template, no detail				[Y]
+* Create git repo						                [Y]
+* Compile resources						                [Y]
+* Create basic template, no detail				        [Y]
 
 Tomorrow: (Sat)
 * Implement City-scape (geometry)[+screenshot (1)]		[Y]
-* Implement texture mapping (buildings)[+screenshot (2)]	[Y]
+* Implement texture mapping (buildings)[+screenshot (2)][Y]
 
 
 
 Monday:
-* Implement infinite plane					[]
-* User movement camera (mouse) & location (keyboard)		[]
-* Begin writing up report/compiling latex report		[]
-* Implement lighting & shadows (lab3)[+screenshot (3)]		[]
+* Implement skybox                                      [Y]
 
 
 Tuesday:
-* Finish lighting & shadows					[]
-* Add any novel objects, make scene look good[+screenshot (4)]	[]
 
 
 ***			Wednesday XMas				***
 
 
-Thursday:
-* Report almost finished					[]
-* Implement animation (lab4)(plane?car?)			[]
-* Have basic requirements fulfilled[+screenshot (5)]		[]
-
+Thursday:       
+* Implement infinite plane					            []
+* User movement camera (mouse) & location (keyboard)	[]
+* Begin writing up report/compiling latex report		[]
+* Add any novel objects, make scene look good[+screenshot (4)]	[]
+* Create cave skybox image                              []
 
 Friday:
+* Implement lighting & shadows (lab3)[+screenshot (3)]	[]
+* Implement animation (lab4)(plane?car?)			    []
+* Have basic requirements fulfilled[+screenshot (5)]	[]
+* All final objects included & textures				    []
+
+Saturday:
+* Report almost finished					            []
+* Finish lighting & animation                           []	
 * Implement advanced feature[+screenshot (6)]			[]
-* All final objects included & textures				[]
-* Finish source code						[]
 
 
-Saturday/Sunday:
+Sunday:
+* Finish source code						            []
 * Finish report writing, progress section etc.			[]
-* Take video							[]
-* Submit							[]
+* Take video							                []
+* Submit							                    []
 
 
 Deliverables:

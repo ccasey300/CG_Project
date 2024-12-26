@@ -577,7 +577,7 @@ struct skyBox {
         textureSamplerID = glGetUniformLocation(programID,"textureSampler");
     }
 
-    void render(glm::mat4 cameraMatrix) {
+    void render(glm::mat4 cameraMatrix, glm::vec3 camPos) {
         glUseProgram(programID);
 
         glEnableVertexAttribArray(0);
@@ -601,6 +601,12 @@ struct skyBox {
 
         glm::mat4 mvp = cameraMatrix * modelMatrix;
         glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, &mvp[0][0]);
+
+    	//infinite plane implementation
+		//pass camera position to shader
+    	//GLuint camPosID = glGetUniformLocation(programID, "camPos");
+    	//glUniform3fv(camPosID, 1, &eye_center[0]); // Pass camera position to the shader
+
 
         // TODO: Enable UV buffer and texture sampler
         // ------------------------------------------
@@ -965,7 +971,7 @@ int main(void) {
 	glm::mat4 viewMatrix, projectionMatrix;
 	glm::float32 FoV = 45;
 	glm::float32 zNear = 0.1f;
-	glm::float32 zFar = 3000.0f;//1000
+	glm::float32 zFar = 30000.0f;//1000
 	projectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, zNear, zFar);
 
 
@@ -975,7 +981,7 @@ int main(void) {
         glm::mat4 viewMatrix = glm::lookAt(eye_center, lookat, up);
         glm::mat4 vp = projectionMatrix * viewMatrix;
     	// Render the skybox
-    	skybox.render(vp);
+    	skybox.render(vp, eye_center);
 
         for (auto &building : buildings) {
             building.render(vp);
