@@ -569,7 +569,7 @@ struct skyBox {
         // TODO: Load a texture
         // --------------------
         // --------------------
-        textureID = LoadTextureTileBox("../lab2/sky_debug.png");
+        textureID = LoadTextureTileBox("../lab2/file.png");
 
         // TODO: Get a handle to texture sampler
         // -------------------------------------
