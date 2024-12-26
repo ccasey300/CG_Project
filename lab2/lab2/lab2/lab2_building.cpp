@@ -20,14 +20,15 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
  //old camera definition
 // OpenGL camera view parameters
 static glm::vec3 eye_center;
-static glm::vec3 lookat(150, 0, 150);
+static glm::vec3 lookat(150, 40, 150);
+//static glm::vec3 lookat(150, 0, 150);
 static glm::vec3 up(0, 1, 0);
 
 // View control 
 static float viewAzimuth = 0.f;
 static float viewPolar = 0.f;
 static float viewDistance = 500.0f;
-
+//previously 500 from lab 2
 /*
 //definition of camera from skybox:
 // OpenGL camera view parameters
@@ -417,6 +418,35 @@ struct skyBox {
             1.0f, 0.0f, 1.0f,
     };
 
+	GLuint index_buffer_data[36] = {		// 12 triangle faces of a box
+		// Front face
+		0, 2, 1,
+		0, 3, 2,
+
+		// Back face
+		4, 6, 5,
+		4, 7, 6,
+
+		// Left face
+		8, 10, 9,
+		8, 11, 10,
+
+		// Right face
+		12, 14, 13,
+		12, 15, 14,
+
+		// Top face
+		16, 18, 17,
+		16, 19, 18,
+
+		// Bottom face
+		20, 22, 21,
+		20, 23, 22,
+	};
+
+
+	//produces textures on outside of box, not inside
+	/*
     GLuint index_buffer_data[36] = {		// 12 triangle faces of a box
             0, 1, 2,
             0, 2, 3,
@@ -436,6 +466,9 @@ struct skyBox {
             20, 21, 22,
             20, 22, 23,
     };
+	*/
+
+
 
     GLfloat uv_buffer_data[48]={
 
@@ -536,7 +569,7 @@ struct skyBox {
         // TODO: Load a texture
         // --------------------
         // --------------------
-        textureID = LoadTextureTileBox("../lab2/studio_garden.png");
+        textureID = LoadTextureTileBox("../lab2/sky_debug.png");
 
         // TODO: Get a handle to texture sampler
         // -------------------------------------
@@ -878,6 +911,7 @@ int main(void) {
 
     int gridSize = 6; // Number of buildings along x/y axes.
     float baseSpace = 100.0f; // Base space between buildings
+	float skyboxMargin = 100.0f; //space between outer building edge and skybox
 
     std::srand(static_cast<unsigned>(std::time(nullptr))); // Seed for better randomness.
 
@@ -915,10 +949,14 @@ int main(void) {
             buildings.push_back(b);
         }
     }
-
+	// Calculate skybox size and position
+	float citySize = gridSize * baseSpace;             // Size of the city
+	float skyboxSize = citySize + skyboxMargin * 2.0f; // Skybox size with margin
+	glm::vec3 skyboxPosition(citySize / 2.0f, 0, citySize / 2.0f);
+	glm::vec3 skyboxScale(skyboxSize, skyboxSize, skyboxSize);
 	//skybox implementatioin:
-	skybox.initialize(glm::vec3(0, 0, 0), glm::vec3(100, 100, 100));
-
+	//skybox.initialize(glm::vec3(0, 0, 0), glm::vec3(100, 100, 100));
+	skybox.initialize(skyboxPosition, skyboxScale);
 
 	eye_center.y = viewDistance * cos(viewPolar);
 	eye_center.x = viewDistance * cos(viewAzimuth);
@@ -927,7 +965,7 @@ int main(void) {
 	glm::mat4 viewMatrix, projectionMatrix;
 	glm::float32 FoV = 45;
 	glm::float32 zNear = 0.1f;
-	glm::float32 zFar = 1200.0f;//1000
+	glm::float32 zFar = 3000.0f;//1000
 	projectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, zNear, zFar);
 
 
