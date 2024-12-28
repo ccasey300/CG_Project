@@ -1,0 +1,53 @@
+\chapter{Progress Report}
+
+GitHub was used for version control and mapping progress. Screenshots were taken along the way which show the scene through various stages of development.
+
+A screenshot of the git history is shown:
+
+
+\newpage
+\section*{\Huge{Progress: Description}}
+
+Screenshot 1: Geometry Rendering
+
+Screenshot 2: Texturing and SkyBox
+
+Screenshot 3: Custom SkyBox
+
+Screenshot 4: Infinite Plane and Camera Control
+
+Screenshot 5: Lighting and Animation
+
+Screenshot 6: Final Render
+
+\newpage
+\section*{\Huge{Progress: Screenshots}}
+\newpage
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Results//Progress_screenshots/Screenshot 1 - Geometry.png}
+    \caption{This screenshot shows successful rendering of buildings and roads in the scene.}
+    %\label{fig:enter-label}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Results//Progress_screenshots/Screenshot 3a - Skybox.png}
+    \caption{This screenshot shows texturing of objects (buildings and roads), and implementation of skybox debug from lab 2.}
+    %\label{fig:enter-label}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Results//Progress_screenshots/Screenshot 3b - Custom Skybox.png.png}
+    \caption{This screenshot shows a custom "cave themed" SkyBox. This was created using online resources like Adobe Image Editor and free-use google images.}
+    %\label{fig:enter-label}
+\end{figure}
+
+\newpage
+\chapter{Discussion: Quality + Robustness}
+I primarily worked using a combination of different lab templates. I primarily used lab 2 and lab 4. However, this approach came with its limitations. Primarily, a lack of object-oriented code as well as being more application specific than I wanted. This lead to lengthy attempts and difficulty debugging. 
+
+As a result, though the code is easily understood upon visual inspection, additional elements required a significant amount of work in order to integrate with the existing scene. In this way, I was too dependent on the templates given and should have deviated my approach earlier.
+
+I would focus on technical implementations at an early and revise my attempts to debug if I was to repeat the project. Inclusion of modular programming would likely make the project's completion far more effective. Also, I spent too much time 'gold-plating.'
+
+The code includes error-handling much in the same way we did in class. File loading, shader implementation and null pointers are managed appropriately. All cleanup is done after rendering as required. Performance was consistently good, however was never properly challenged. The option to include more animation, more lighting, etc. is there. The scene consistently runs well over 15 FPS on my laptop.

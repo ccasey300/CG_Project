@@ -23,9 +23,9 @@ Tuesday:
 Thursday:       
 * Implement infinite plane					            []
 * User movement camera (mouse) & location (keyboard)	[]
-* Begin writing up report/compiling latex report		[]
+* Begin writing up report/compiling latex report		[Y]
 * Add any novel objects, make scene look good[+screenshot (4)]	[]
-* Create cave skybox image                              []
+* Create cave skybox image                              [Y]
 
 Friday:
 * Implement lighting & shadows (lab3)[+screenshot (3)]	[]
@@ -34,7 +34,7 @@ Friday:
 * All final objects included & textures				    []
 
 Saturday:
-* Report almost finished					            []
+* Report almost finished					            [Y]
 * Finish lighting & animation                           []	
 * Implement advanced feature[+screenshot (6)]			[]
 
