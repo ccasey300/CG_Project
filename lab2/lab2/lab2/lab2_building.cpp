@@ -28,20 +28,24 @@ static glm::vec3 up(0, 1, 0);
 static float viewAzimuth = 0.f;
 static float viewPolar = 0.f;
 static float viewDistance = 500.0f;
-//previously 500 from lab 2
-/*
-//definition of camera from skybox:
-// OpenGL camera view parameters
-static glm::vec3 eye_center;
-static glm::vec3 lookat(0, 1, 0);
-static glm::vec3 up(0, 1, 0);
 
-// View control
-static float viewAzimuth = 0.f;
-static float viewPolar = 0.f;
-static float viewDistance = 1.0f;
-*/
+// Lighting control
+const glm::vec3 wave500(0.0f, 255.0f, 146.0f);
+const glm::vec3 wave600(255.0f, 190.0f, 0.0f);
+const glm::vec3 wave700(205.0f, 0.0f, 0.0f);
+static glm::vec3 lightIntensity = 5.0f * (8.0f * wave500 + 15.6f * wave600 + 18.4f * wave700);
+static glm::vec3 lightPosition(-275.0f, 500.0f, -275.0f);
 
+//shadows
+static glm::vec3 lightUp(0, 0, 1);
+static int shadowMapWidth = 1024;
+static int shadowMapHeight = 1024;
+//GLuint depthTexture, fbo;
+
+// TODO: set these parameters
+static float depthFoV = 45.f;
+static float depthNear = 100.f;
+static float depthFar = 2000.f;
 
 static GLuint LoadTextureTileBox(const char *texture_file_path) {
     int w, h, channels;
@@ -66,6 +70,64 @@ static GLuint LoadTextureTileBox(const char *texture_file_path) {
 
     return texture;
 }
+//function to simulate endless effet
+void resetEye(float gridsize) {
+	if (eye_center.x >= gridsize * 2) {
+		eye_center.x -= gridsize * 2;
+	}
+	if (eye_center.z >= gridsize * 2) {
+		eye_center.z -= gridsize * 2;
+	}
+	if (eye_center.x <= 0 - gridsize) {
+		eye_center.x += gridsize * 2;
+	}
+	if (eye_center.z <= 0 - gridsize) {
+		eye_center.z += gridsize * 2;
+	}
+}
+
+
+//below is code for simulating an enless effect
+struct Ground {
+	GLuint vpMatrixID;
+	GLuint eyecenterID;
+	GLuint gridSizeID;
+	GLuint programID;
+
+	void init() {
+		// Load shaders
+		programID = LoadShadersFromFile("../lab2/ground.vert", "../lab2/ground.frag");
+
+		if (programID == 0) {
+			std::cerr << "Failed to load shaders." << std::endl;
+		}
+
+		// Get uniform locations
+		vpMatrixID = glGetUniformLocation(programID, "VP");
+		eyecenterID = glGetUniformLocation(programID, "camPos");
+		gridSizeID = glGetUniformLocation(programID, "gGridCCellSize");
+	}
+
+	void render(glm::mat4 cameraMatrix, glm::vec3 eyeCenter, float grid_size) {
+		glUseProgram(programID);
+
+		glm::mat4 vp = cameraMatrix;
+		glm::vec3 camPos = eyeCenter;
+		// Pass uniforms to shaders
+		glUniformMatrix4fv(vpMatrixID, 1, GL_FALSE, &cameraMatrix[0][0]);
+		glUniform3fv(eyecenterID, 1, &eyeCenter[0]);
+		glUniform1f(gridSizeID, grid_size);
+
+		// Render the plane
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+
+	void cleanup() {
+		glDeleteProgram(programID);
+	}
+};
+
+
 
 struct Building {
 	glm::vec3 position;		// Position of the box 
@@ -212,6 +274,8 @@ struct Building {
 
 	// Shader variable IDs
 	GLuint mvpMatrixID;
+	GLuint lightPositionID;//added for lighting & shadows
+	GLuint lightIntensityID;//
 	GLuint textureSamplerID;
 	GLuint programID;
 
@@ -250,7 +314,7 @@ struct Building {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_buffer_data), index_buffer_data, GL_STATIC_DRAW);
 
 		// Create and compile our GLSL program from the shaders
-		programID = LoadShadersFromFile("../lab2/box.vert", "../lab2/box.frag");
+		programID = LoadShadersFromFile("../lab2/project.vert", "../lab2/project.frag");
 		if (programID == 0)
 		{
 			std::cerr << "Failed to load shaders." << std::endl;
@@ -258,6 +322,8 @@ struct Building {
 
 		// Get a handle for our "MVP" uniform
 		mvpMatrixID = glGetUniformLocation(programID, "MVP");
+		lightPositionID = glGetUniformLocation(programID, "lightPosition");//added lighting
+		lightIntensityID = glGetUniformLocation(programID, "lightIntensity");//
 
         // TODO: Load a texture 
         // --------------------
@@ -281,34 +347,31 @@ struct Building {
 		glBindBuffer(GL_ARRAY_BUFFER, colorBufferID);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, uvBufferID);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
 
 		// TODO: Model transform 
 		// -----------------------
 
         glm::mat4 modelMatrix = glm::mat4();
-        //glm::vec3 scale = glm::vec3(16.0f, 80.0f, 16.0f);//dimensions given
-        // Scale the box along each axis to make it look like a building
-
         modelMatrix = glm::translate(modelMatrix, glm::vec3(position.x, position.y+ (scale.y), position.z));
         modelMatrix = glm::scale(modelMatrix, scale);
-        // -----------------------
-        /*
-        glm::mat4 modelMatrix = glm::mat4(1.0f);
-        //to render all buildings, must use their respective translations!
-        modelMatrix = glm::translate(modelMatrix, glm::vec3(position.x, position.y + (scale.y / 2.0f), position.z));        modelMatrix = glm::scale(modelMatrix, this->scale);
-        */
+
 		// Set model-view-projection matrix
 		glm::mat4 mvp = cameraMatrix * modelMatrix;
 		glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, &mvp[0][0]);
 
+		// Set light data
+		glUniform3fv(lightPositionID, 1, &lightPosition[0]);//
+		glUniform3fv(lightIntensityID, 1, &lightIntensity[0]);//
+
 		// TODO: Enable UV buffer and texture sampler
 		// ------------------------------------------
-        // ------------------------------------------
-        glEnableVertexAttribArray(2);
-        glBindBuffer(GL_ARRAY_BUFFER, uvBufferID);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
-// Set textureSampler to use texture unit 0
+        // -----------------------------------------
+		// Set textureSampler to use texture unit 0
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
         glUniform1i(textureSamplerID, 0);
@@ -323,7 +386,7 @@ struct Building {
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
-        //glDisableVertexAttribArray(2);
+        glDisableVertexAttribArray(2);
 	}
 
 	void cleanup() {
@@ -519,6 +582,8 @@ struct skyBox {
 
     // Shader variable IDs
     GLuint mvpMatrixID;
+	GLuint lightPositionID;//added for lighting
+	GLuint lightIntensityID;//
     GLuint textureSamplerID;
     GLuint programID;
 
@@ -538,7 +603,6 @@ struct skyBox {
 
         // Create a vertex buffer object to store the color data
         // TODO:
-        //for (int i = 0; i < 24; ++i) uv_buffer_data[2*i+1] *= 5;
         glGenBuffers(1, &colorBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, colorBufferID);
         glBufferData(GL_ARRAY_BUFFER, sizeof(color_buffer_data), color_buffer_data, GL_STATIC_DRAW);
@@ -557,7 +621,7 @@ struct skyBox {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_buffer_data), index_buffer_data, GL_STATIC_DRAW);
 
         // Create and compile our GLSL program from the shaders
-        programID = LoadShadersFromFile("../lab2/box.vert", "../lab2/box.frag");
+        programID = LoadShadersFromFile("../lab2/project.vert", "../lab2/project.frag");
         if (programID == 0)
         {
             std::cerr << "Failed to load shaders." << std::endl;
@@ -565,11 +629,13 @@ struct skyBox {
 
         // Get a handle for our "MVP" uniform
         mvpMatrixID = glGetUniformLocation(programID, "MVP");
+    	lightPositionID = glGetUniformLocation(programID, "lightPosition");//added for lighting
+    	lightIntensityID = glGetUniformLocation(programID, "lightIntensity");//
 
         // TODO: Load a texture
         // --------------------
         // --------------------
-        textureID = LoadTextureTileBox("../lab2/file.png");
+        textureID = LoadTextureTileBox("../lab2/my_cave.png");
 
         // TODO: Get a handle to texture sampler
         // -------------------------------------
@@ -602,6 +668,10 @@ struct skyBox {
         glm::mat4 mvp = cameraMatrix * modelMatrix;
         glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, &mvp[0][0]);
 
+
+    	// Set light data
+    	glUniform3fv(lightPositionID, 1, &lightPosition[0]);//
+    	glUniform3fv(lightIntensityID, 1, &lightIntensity[0]);//
     	//infinite plane implementation
 		//pass camera position to shader
     	//GLuint camPosID = glGetUniformLocation(programID, "camPos");
@@ -795,6 +865,10 @@ struct Road {
         20, 22, 23
     };
 
+	GLuint lightPositionID;//
+	GLuint lightIntensityID;//
+
+
 	void initialize(glm::vec3 position, glm::vec3 scale, const char* textureFilePath) {
 		this->position = position;
 		this->scale = scale;
@@ -821,8 +895,10 @@ struct Road {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_buffer_data), index_buffer_data, GL_STATIC_DRAW);
 
-		programID = LoadShadersFromFile("../lab2/box.vert", "../lab2/box.frag");
+		programID = LoadShadersFromFile("../lab2/project.vert", "../lab2/project.frag");
 		mvpMatrixID = glGetUniformLocation(programID, "MVP");
+		lightPositionID = glGetUniformLocation(programID, "lightPosition");//added for lighting
+		lightIntensityID = glGetUniformLocation(programID, "lightIntensity");//
 		textureSamplerID = glGetUniformLocation(programID, "textureSampler");
 	}
 
@@ -850,6 +926,9 @@ struct Road {
 
         glm::mat4 mvp = cameraMatrix * modelMatrix;
         glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, &mvp[0][0]);
+		// Set light data
+		glUniform3fv(lightPositionID, 1, &lightPosition[0]);//
+		glUniform3fv(lightIntensityID, 1, &lightIntensity[0]);//
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
@@ -914,7 +993,7 @@ int main(void) {
     std::vector<Building> buildings; // For storing  buildings
 	std::vector<Road> roads;  // Use separate vector for roads
 	skyBox skybox;	//introduce skybox (cave setting)
-
+	Ground g;
     int gridSize = 6; // Number of buildings along x/y axes.
     float baseSpace = 100.0f; // Base space between buildings
 	float skyboxMargin = 100.0f; //space between outer building edge and skybox
@@ -955,6 +1034,15 @@ int main(void) {
             buildings.push_back(b);
         }
     }
+	/*
+//this is the mayors house (stalactite from wall)
+	Building c;
+	glm::vec3 position(0, 200, 0);
+	glm::vec3 size(45, 80, 25);
+	c.initialize(position, size); // Specify building texture
+	buildings.push_back(c);
+*/
+
 	// Calculate skybox size and position
 	float citySize = gridSize * baseSpace;             // Size of the city
 	float skyboxSize = citySize + skyboxMargin * 2.0f; // Skybox size with margin
@@ -964,22 +1052,54 @@ int main(void) {
 	//skybox.initialize(glm::vec3(0, 0, 0), glm::vec3(100, 100, 100));
 	skybox.initialize(skyboxPosition, skyboxScale);
 
+	g.init();
+
 	eye_center.y = viewDistance * cos(viewPolar);
 	eye_center.x = viewDistance * cos(viewAzimuth);
 	eye_center.z = viewDistance * sin(viewAzimuth);
 
-	glm::mat4 viewMatrix, projectionMatrix;
+	//glm::mat4 viewMatrix, projectionMatrix;
+	glm::mat4 viewMatrix, projectionMatrix, light_view_matrix, light_projection_matrix, LVP;
 	glm::float32 FoV = 45;
 	glm::float32 zNear = 0.1f;
 	glm::float32 zFar = 30000.0f;//1000
 	projectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, zNear, zFar);
+	light_projection_matrix = glm::perspective(glm::radians(depthFoV), (float)shadowMapWidth / shadowMapHeight, depthNear, depthFar);
 
+	/*
+	// Camera setup
+	glm::mat4 viewMatrix, projectionMatrix, light_view_matrix, light_projection_matrix, LVP;
+	projectionMatrix = glm::perspective(glm::radians(FoV), (float)windowWidth / windowHeight, zNear, zFar);
+	light_projection_matrix = glm::perspective(glm::radians(depthFoV), (float)shadowMapWidth / shadowMapHeight, depthNear, depthFar);//
+	*/
 
     // Rendering loop
     do {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//implement lighting
+    	light_view_matrix = glm::lookAt(lightPosition, lightPosition * glm::vec3(0.0f,-1.0f,0.0f), lightUp);//
+    	light_projection_matrix = glm::perspective(glm::radians(depthFoV), (float)shadowMapWidth / shadowMapHeight, depthNear, depthFar);//
+    	LVP = light_projection_matrix * light_view_matrix;//
+    	glUniformMatrix4fv(glGetUniformLocation(skybox.programID, "LVP"), 1, GL_FALSE, &LVP[0][0]);//
+
+
         glm::mat4 viewMatrix = glm::lookAt(eye_center, lookat, up);
         glm::mat4 vp = projectionMatrix * viewMatrix;
+    	resetEye(gridSize);  // Adjust camera position
+    	//rendering ground plane for infinite effect
+    	g.render(vp, eye_center, gridSize);
+		//perform first pass
+    	// Render the skybox
+    	skybox.render(vp, eye_center);
+
+    	for (auto &building : buildings) {
+    		building.render(vp);
+    	}
+    	for (auto &road : roads) {
+    		road.render(vp);
+    	}
+
+    	/*
     	// Render the skybox
     	skybox.render(vp, eye_center);
 
@@ -989,6 +1109,8 @@ int main(void) {
     	for (auto &road : roads) {
     		road.render(vp);
     	}
+
+    	*/
         glfwSwapBuffers(window);
         glfwPollEvents();
     } while (!glfwWindowShouldClose(window));
@@ -997,6 +1119,8 @@ int main(void) {
     for (auto &building : buildings) {
         building.cleanup();
     }
+	g.cleanup();
+	skybox.cleanup();
     glfwTerminate();
     return 0;
 }

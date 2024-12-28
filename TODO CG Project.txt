@@ -27,15 +27,20 @@ Thursday:
 * Add any novel objects, make scene look good[+screenshot (4)]	[]
 * Create cave skybox image                              [Y]
 
-Friday:
-* Implement lighting & shadows (lab3)[+screenshot (3)]	[]
-* Implement animation (lab4)(plane?car?)			    []
+
+
 * Have basic requirements fulfilled[+screenshot (5)]	[]
 * All final objects included & textures				    []
 
+
+
+Left:
+
 Saturday:
 * Report almost finished					            [Y]
-* Finish lighting & animation                           []	
+* Finish lighting                                       [N]	
+* Infinite plane & camera control                       []
+* Animation                                             []
 * Implement advanced feature[+screenshot (6)]			[]
 
 

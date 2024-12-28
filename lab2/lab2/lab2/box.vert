@@ -26,3 +26,4 @@ void main() {
     // TODO: Pass UV to the fragment shader
     uv = vertexUV;
 }
+
