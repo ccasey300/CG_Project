@@ -1650,7 +1650,7 @@ int main(void) {
     		road.render(vp);
     	}
     	//animation
-    	bot.render(vp);
+    	//bot.render(vp);
     	//restore previous state after bot (inserted trying to debug why everything wont show togetehr)
 
 
