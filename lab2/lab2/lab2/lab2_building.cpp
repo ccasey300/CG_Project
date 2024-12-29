@@ -28,7 +28,7 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
  //old camera definition
 // OpenGL camera view parameters
 static glm::vec3 eye_center(100.0f, 0.0f, 100.0f);
-static glm::vec3 lookat(-50, 0, 0);
+static glm::vec3 lookat(-50, 0, 5000000);
 
 static glm::vec3 up(0, 1, 0);
 
@@ -1466,11 +1466,23 @@ struct MyBot {
 	}
 
 	void render(glm::mat4 cameraMatrix) {
+		//insert here:
+
+
 
         const tinygltf::Skin &skin = model.skins[0];
         skeleton.renderSkeleton(model, skin, globalTransforms, cameraMatrix);
+		// Reset OpenGL state after skeleton rendering
+		glBindVertexArray(0);                // Unbind VAO
+		glUseProgram(0);                     // Reset active shader program
+		glEnable(GL_DEPTH_TEST);             // Ensure depth testing is enabled
+		glCullFace(GL_BACK);                 // Ensure back-face culli
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 
 	}
+
 
 
 
@@ -1496,8 +1508,10 @@ int main(void) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Open a window and create its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(2048, 1536, "Lab 2", NULL, NULL);
-    if (window == NULL) {
+    //GLFWwindow* window = glfwCreateWindow(2048, 1536, "Lab 2", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(512, 384, "Project", NULL, NULL);
+
+	if (window == NULL) {
         std::cerr << "Failed to open a GLFW window." << std::endl;
         glfwTerminate();
         return -1;
@@ -1636,7 +1650,7 @@ int main(void) {
     		road.render(vp);
     	}
     	//animation
-    	//bot.render(vp);
+    	bot.render(vp);
     	//restore previous state after bot (inserted trying to debug why everything wont show togetehr)
 
 
@@ -1650,7 +1664,7 @@ int main(void) {
     		fTime = 0;
 
     		std::stringstream stream;
-    		stream << std::fixed << std::setprecision(2) << "Lab 2 | Frames per second (FPS): " << fps;
+    		stream << std::fixed << std::setprecision(2) << "Final Scene | Frames per second (FPS): " << fps;
     		glfwSetWindowTitle(window, stream.str().c_str());
     	}
 
