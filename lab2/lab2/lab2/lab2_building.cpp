@@ -19,15 +19,16 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 
  //old camera definition
 // OpenGL camera view parameters
-static glm::vec3 eye_center;
-static glm::vec3 lookat(150, 40, 150);
-//static glm::vec3 lookat(150, 0, 150);
+static glm::vec3 eye_center(500.0f, 0.0f, 0.0f);
+static glm::vec3 lookat(-50, 0, 0);
+
 static glm::vec3 up(0, 1, 0);
 
 // View control 
-static float viewAzimuth = 0.f;
+static float viewAzimuth = 0.6f;
 static float viewPolar = 0.f;
 static float viewDistance = 500.0f;
+
 
 // Lighting control
 const glm::vec3 wave500(0.0f, 255.0f, 146.0f);
@@ -111,8 +112,8 @@ struct Ground {
 	void render(glm::mat4 cameraMatrix, glm::vec3 eyeCenter, float grid_size) {
 		glUseProgram(programID);
 
-		glm::mat4 vp = cameraMatrix;
-		glm::vec3 camPos = eyeCenter;
+		//glm::mat4 vp = cameraMatrix;
+		//glm::vec3 camPos = eyeCenter;
 		// Pass uniforms to shaders
 		glUniformMatrix4fv(vpMatrixID, 1, GL_FALSE, &cameraMatrix[0][0]);
 		glUniform3fv(eyecenterID, 1, &eyeCenter[0]);
@@ -998,6 +999,10 @@ int main(void) {
     float baseSpace = 100.0f; // Base space between buildings
 	float skyboxMargin = 100.0f; //space between outer building edge and skybox
 
+	lookat.x = eye_center.x + sin(viewAzimuth);
+	lookat.z = eye_center.z + cos(viewAzimuth);
+	lookat.y = eye_center.y;
+
     std::srand(static_cast<unsigned>(std::time(nullptr))); // Seed for better randomness.
 
     // Create roads
@@ -1085,7 +1090,7 @@ int main(void) {
 
         glm::mat4 viewMatrix = glm::lookAt(eye_center, lookat, up);
         glm::mat4 vp = projectionMatrix * viewMatrix;
-    	resetEye(gridSize);  // Adjust camera position
+    	//resetEye(gridSize);  // Adjust camera position
     	//rendering ground plane for infinite effect
     	g.render(vp, eye_center, gridSize);
 		//perform first pass
@@ -1142,28 +1147,70 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 
 	if (key == GLFW_KEY_UP && (action == GLFW_REPEAT || action == GLFW_PRESS))
 	{
-		viewPolar -= 0.1f;
-		eye_center.y = viewDistance * cos(viewPolar);
+		//viewPolar -= 0.1f;
+		//eye_center.y = viewDistance * cos(viewPolar);
+		lookat.y += 2.0f;
 	}
 
 	if (key == GLFW_KEY_DOWN && (action == GLFW_REPEAT || action == GLFW_PRESS))
 	{
-		viewPolar += 0.1f;
-		eye_center.y = viewDistance * cos(viewPolar);
+		//viewPolar += 0.1f;
+		//eye_center.y = viewDistance * cos(viewPolar);
+		lookat.y -= 2.0f;
 	}
 
 	if (key == GLFW_KEY_LEFT && (action == GLFW_REPEAT || action == GLFW_PRESS))
 	{
 		viewAzimuth -= 0.1f;
-		eye_center.x = viewDistance * cos(viewAzimuth);
-		eye_center.z = viewDistance * sin(viewAzimuth);
+		//eye_center.x = viewDistance * cos(viewAzimuth);
+		//eye_center.z = viewDistance * sin(viewAzimuth);
+		lookat.x = eye_center.x + sin(viewAzimuth);
+		lookat.z = eye_center.z + cos(viewAzimuth);
 	}
 
 	if (key == GLFW_KEY_RIGHT && (action == GLFW_REPEAT || action == GLFW_PRESS))
 	{
 		viewAzimuth += 0.1f;
-		eye_center.x = viewDistance * cos(viewAzimuth);
-		eye_center.z = viewDistance * sin(viewAzimuth);
+		//eye_center.x = viewDistance * cos(viewAzimuth);
+		//eye_center.z = viewDistance * sin(viewAzimuth);
+		lookat.x = eye_center.x + sin(viewAzimuth);
+		lookat.z = eye_center.z + cos(viewAzimuth);
+	}
+
+	//move forwards: w
+	if (key == GLFW_KEY_W && (action == GLFW_REPEAT || action == GLFW_PRESS))
+	{
+		eye_center.x += 1.2f * sin(viewAzimuth);
+		eye_center.z += 1.2f * cos(viewAzimuth);
+		lookat.x = eye_center.x + sin(viewAzimuth);
+		lookat.z = eye_center.z + cos(viewAzimuth);
+	}
+
+	//move backwards: s
+	if (key == GLFW_KEY_S && (action == GLFW_REPEAT || action == GLFW_PRESS))
+	{
+		eye_center.x -= 1.2f * sin(viewAzimuth);
+		eye_center.z -= 1.2f * cos(viewAzimuth);
+		lookat.x = eye_center.x + sin(viewAzimuth);
+		lookat.z = eye_center.z + cos(viewAzimuth);
+	}
+
+	//move left: a
+	if (key == GLFW_KEY_A && (action == GLFW_REPEAT || action == GLFW_PRESS))
+	{
+		eye_center.x -= 1.2f * cos(viewAzimuth + 3.14f);
+		eye_center.z += 1.2f * sin(viewAzimuth + 3.14f);
+		lookat.x = eye_center.x + sin(viewAzimuth);
+		lookat.z = eye_center.z + cos(viewAzimuth);
+	}
+
+	//move back: d
+	if (key == GLFW_KEY_D && (action == GLFW_REPEAT || action == GLFW_PRESS))
+	{
+		eye_center.x += 1.2f * cos(viewAzimuth - 3.14f);
+		eye_center.z -= 1.2f * sin(viewAzimuth - 3.14f);
+		lookat.x = eye_center.x + sin(viewAzimuth);
+		lookat.z = eye_center.z + cos(viewAzimuth);
 	}
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
